@@ -31,6 +31,5 @@ export class AddComponent implements OnInit {
   }
 
   onSubmit(e) {
-    e.preventDefault();
   }
 }

@@ -68,4 +68,10 @@ export class SmestajComponent implements OnInit {
       ];
     }
   }
+
+  kupi(smestaj: Smestaj) {
+
+    const brojNoci: number = +prompt('Broj noci:');
+    console.log(`Ukupna cena: ${this.smestajService.getPrice(brojNoci, smestaj)}`);
+  }
 }

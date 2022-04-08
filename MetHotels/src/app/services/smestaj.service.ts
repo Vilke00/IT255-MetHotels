@@ -96,4 +96,8 @@ export class SmestajService {
   getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min) + min);
   }
+
+  getPrice(brojNoci: number, smestaj: Smestaj) {
+    return brojNoci * smestaj.cena;
+  }
 }
