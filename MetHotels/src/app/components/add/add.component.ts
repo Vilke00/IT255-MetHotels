@@ -27,18 +27,6 @@ export class AddComponent implements OnInit {
 
     this.smestaj.id = 4;
 
-    // this.smestaji.unshift(this.smestaj);
-
-    // this.smestaj = {
-    //   id: null,
-    //   naziv: '',
-    //   mesto: '',
-    //   ocena: null,
-    //   cena: null,
-    // };
-
-    // console.log(this.smestaj);
-
     this.roomToAdd.emit(this.smestaj);
   }
 

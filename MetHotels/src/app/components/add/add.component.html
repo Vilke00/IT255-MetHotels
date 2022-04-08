@@ -1,23 +1,75 @@
 <div class="card card-body mb-3">
-    <form (submit)="onSubmit($event)">
+    <form #smestajForm="ngForm" (ngSubmit)="onSubmit(smestajForm)">
         <div class="form-group">
             <label>Naziv</label>
-            <input type="text" class="form-control" [(ngModel)]="smestaj.naziv" name="naziv">
+            <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="smestaj.naziv" 
+            [ngClass]="{'is-invalid':smestajNaziv.errors && smestajNaziv.touched}"
+            name="naziv"
+            #smestajNaziv="ngModel"
+            required
+            minlength="6"
+            >
+            <div [hidden]="!smestajNaziv.errors?.['required']" class="invalid-feedback">
+                Naziv je potreban
+            </div>
+            <div [hidden]="!smestajNaziv.errors?.['minlength']" class="invalid-feedback">
+                Mora biti barem 6 karaktera
+            </div>
         </div>
         <div class="form-group">
             <label>Mesto</label>
-            <input type="text" class="form-control" [(ngModel)]="smestaj.mesto" name="mesto">
+            <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="smestaj.mesto" 
+            [ngClass]="{'is-invalid':smestajMesto.errors && smestajMesto.touched}"
+            name="mesto"
+            #smestajMesto="ngModel"
+            required
+            minlength="2"
+            >
+            <div [hidden]="!smestajMesto.errors?.['required']" class="invalid-feedback">
+                Potrebno je uneti mesto
+            </div>
+            <div [hidden]="!smestajMesto.errors?.['minlength']" class="invalid-feedback">
+                Mora biti barem 2 karaktera
+            </div>
         </div>
         <div class="form-group">
             <label>Ocena</label>
-            <input type="number" class="form-control" [(ngModel)]="smestaj.ocena" name="ocena">
+            <input 
+            type="number" 
+            class="form-control" 
+            [(ngModel)]="smestaj.ocena" 
+            [ngClass]="{'is-invalid':smestajOcena.errors && smestajOcena.touched}"
+            name="ocena"
+            #smestajOcena="ngModel"
+            required
+            >
+            <div [hidden]="!smestajOcena.errors?.['required']" class="invalid-feedback">
+                Potrebno je uneti ocenu
+            </div>
         </div>
         <div class="form-group">
             <label>Cena</label>
-            <input type="number" class="form-control" [(ngModel)]="smestaj.cena" name="cena">
+            <input 
+            type="number" 
+            class="form-control" 
+            [(ngModel)]="smestaj.cena" 
+            [ngClass]="{'is-invalid':smestajCena.errors && smestajCena.touched}"
+            name="cena"
+            #smestajCena="ngModel"
+            required
+            >
+            <div [hidden]="!smestajCena.errors?.['required']" class="invalid-feedback">
+                Potrebno je uneti cenu
+            </div>
         </div>
 
-        <button (click)="dodajApartman()" [disabled]="smestaj.naziv == '' || smestaj.mesto == '' "
+        <button (click)="dodajApartman()" [disabled]="!smestajForm.form.valid"
             class="btn btn-block mb-3">Dodaj novi apartman</button>
     </form>
 </div>
