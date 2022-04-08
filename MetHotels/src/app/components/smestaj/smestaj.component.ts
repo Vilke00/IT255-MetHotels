@@ -1,73 +1,53 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 import { Smestaj } from 'src/app/models/Smestaj';
-
+import { SmestajService } from 'src/app/services/smestaj.service';
 
 @Component({
   selector: 'app-smestaj',
   templateUrl: './smestaj.component.html',
-  styleUrls: ['./smestaj.component.css']
+  styleUrls: ['./smestaj.component.css'],
 })
 export class SmestajComponent implements OnInit {
-
   pretrazivac: string;
   @Output() passValue = new EventEmitter();
+  @Output() zaBrisanje: EventEmitter<any> = new EventEmitter();
 
   smestaj: Smestaj = {
+    id: null,
     naziv: '',
     mesto: '',
     ocena: null,
-    cena: null
+    cena: null,
   };
 
   showUserForm: boolean = false;
   smestaji: Smestaj[];
   enableAdd: boolean = true;
 
-  constructor() { this.pretrazivac = ""}
+  constructor(private smestajService: SmestajService) {
+    this.pretrazivac = '';
+  }
 
   ngOnInit(): void {
-    this.smestaji = [
-      {
-        naziv: 'Apartamani Knez',
-        mesto: 'Zlatibor',
-        ocena: 8.5,
-        cena: 6000,
-        slika: 'https://loremflickr.com/300/100/apartments ?random=1'
-      },
-      {
-        naziv: 'Villa Akademik',
-        mesto: 'Tara',
-        ocena: 7,
-        cena: 4500,
-        slika: 'https://loremflickr.com/300/100/apartments ?random=2'
-      },
-      {
-        naziv: 'Kopaonik Resort',
-        mesto: 'Kopaonik',
-        ocena: 9.3,
-        cena: 9999,
-        slika: 'https://loremflickr.com/300/100/apartments ?random=3'
-      }
-    ];
-  }
-  id = 3;
-
-  dodajApartman(){
-    this.smestaj.slika = `https://loremflickr.com/300/100/apartments ?random=${this.id}`;
-    this.id++;
-    this.smestaji.unshift(this.smestaj);
-
-    this.smestaj = {
-      naziv: '',
-      mesto: '',
-      ocena: null,
-      cena: null
-    };
+    this.smestajService.getSmestaji().subscribe((smestaji) => {
+      this.smestaji = smestaji;
+    });
   }
 
-  onSubmit(e) {
-    e.preventDefault();
+  addSmestaj(smestaj: Smestaj) {
+    this.smestaji.unshift(smestaj);
+  }
+
+  onDelete(smestaj: Smestaj) {
+    if (confirm('Da li zaista zelite da obrisete ovaj zapis?')) {
+      this.zaBrisanje.emit();
+      this.smestajService.deleteRoom(smestaj);
+    }
+  }
+
+  onUpdate(smestaj: Smestaj) {
+    this.smestajService.updateRoom(smestaj);
   }
 
   pretrazi(): void {
@@ -75,19 +55,17 @@ export class SmestajComponent implements OnInit {
   }
 
   promesaj() {
-    let index = this.smestaji.length
+    let index = this.smestaji.length;
     let randomIndex;
 
     while (index != 0) {
       randomIndex = Math.floor(Math.random() * index);
       index--;
 
-      [this.smestaji[index],
-       this.smestaji[randomIndex]] = [
+      [this.smestaji[index], this.smestaji[randomIndex]] = [
         this.smestaji[randomIndex],
-         this.smestaji[index]
-        ];
+        this.smestaji[index],
+      ];
     }
   }
-
 }
