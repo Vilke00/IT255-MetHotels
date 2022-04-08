@@ -1,0 +1,51 @@
+<div class="row">
+<h2>Smestaji</h2>
+<h2 class="ml-auto">Pretrazi po ceni</h2>
+</div>
+<div class="row">
+<button (click)="showUserForm = !showUserForm" class="btn btn-dark mb-3">Dodaj apartman</button>
+<input type="number" class="ml-auto mb-3" name="pretrazivac" [(ngModel)]="pretrazivac" (ngModelChange)="pretrazi()">
+</div>
+<div class="card card-body mb-3" *ngIf="showUserForm">
+    <form (submit)="onSubmit($event)">
+        <div class="form-group">
+            <label>Naziv</label>
+            <input type="text" class="form-control" [(ngModel)]="smestaj.naziv" name="naziv">
+        </div>
+        <div class="form-group">
+            <label>Mesto</label>
+            <input type="text" class="form-control" [(ngModel)]="smestaj.mesto" name="mesto">
+        </div>
+        <div class="form-group">
+            <label>Ocena</label>
+            <input type="number" class="form-control" [(ngModel)]="smestaj.ocena" name="ocena">
+        </div>
+        <div class="form-group">
+            <label>Cena</label>
+            <input type="number" class="form-control" [(ngModel)]="smestaj.cena" name="cena">
+        </div>
+
+        <button (click)="dodajApartman()" [disabled]="smestaj.naziv == '' || smestaj.mesto == '' "
+            class="btn btn-block mb-3">Dodaj novi apartman</button>
+    </form>
+</div>
+<ul class="list-unstyled" *ngIf="smestaji.length > 0">
+    <li class="card card-body mb-2" *ngFor="let smestaj of smestaji | filterPipe: pretrazivac">
+        <div class="row">
+            <div class="col-sm-4">
+                <img *ngIf="smestaj.slika" class="img-fluid" [src]="smestaj.slika" alt="">
+            </div>
+            <div class="col-sm-4">
+                <h3>{{smestaj.naziv}} </h3>
+                <h3>{{smestaj.mesto}}</h3>
+            </div>
+            <div class="col-sm-4">
+                <h4>Ocena: {{smestaj.ocena}} </h4>
+                <h4>Cena: {{smestaj.cena}}</h4>
+            </div>
+        </div>
+    </li>
+</ul>
+<button (click)="promesaj()" class="btn btn-danger">Random sort</button>
+
+<h4 *ngIf="smestaji?.length == 0">Nema smestaja</h4>
